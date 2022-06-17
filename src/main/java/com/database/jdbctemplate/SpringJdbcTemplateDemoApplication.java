@@ -35,7 +35,7 @@ public class SpringJdbcTemplateDemoApplication implements CommandLineRunner {
 	      studentJDBCTemplate.create("Ayan", 15);
 
 	      System.out.println("------Listing Multiple Records--------" );
-	      List<Student> students = studentJDBCTemplate.listStudents();
+	      List<Student> students = studentJDBCTemplate.findAll();
 	      
 	      for (Student record : students) {
 	         System.out.print("ID : " + record.getId() );
@@ -43,6 +43,16 @@ public class SpringJdbcTemplateDemoApplication implements CommandLineRunner {
 	         System.out.println(", Age : " + record.getAge());
 	      }  
 		
+	      System.out.println("----Updating Record with ID = 2 -----" );
+	      studentJDBCTemplate.update(2, 20);
+	      
+	      System.out.println("----Listing Record with ID = 2 -----" );
+	      Student student = studentJDBCTemplate.findById(2);
+	      System.out.print("ID : " + student.getId() );
+	      System.out.print(", Name : " + student.getName() );
+	      System.out.println(", Age : " + student.getAge());  
+	      
+	      
 		
 	//	logger.info("All users -> {}", studentJDBCTemplate.listStudents());
 	}
