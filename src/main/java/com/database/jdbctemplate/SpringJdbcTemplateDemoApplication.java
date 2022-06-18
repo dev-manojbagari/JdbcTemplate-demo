@@ -1,11 +1,15 @@
 package com.database.jdbctemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+import com.in28minutes.database.databasedemo.entity.Student;
 import com.in28minutes.database.databasedemo.jdbc.EmployeeJbdcDao;
 import com.in28minutes.database.databasedemo.jdbc.PersonJbdcDao;
 import com.in28minutes.database.databasedemo.jdbc.StudentJbdcDao;
@@ -82,7 +86,37 @@ public class SpringJdbcTemplateDemoApplication implements CommandLineRunner {
 //		byte[] imageData = { 0, 1, 0, 8, 20, 40, 95 };
 //		employeeJDBCTemplate.updateImage(1, imageData);
 
-		personJDBCTemplate.updateDescription(1, "This can be a very long text upto 4 GB of size.");
+// personJDBCTemplate.updateDescription(1, "This can be a very long text upto 4 GB of size.");
+
+		System.out.println("------Batch update--------");
+		List<Student> initialStudents = studentJDBCTemplate.findAll();
+		System.out.println("Initial Students");
+
+		for (Student student2 : initialStudents) {
+			System.out.print("ID : " + student2.getId());
+			System.out.println(", Age : " + student2.getAge());
+		}
+		Student student = new Student();
+		student.setId(1);
+		student.setAge(10);
+
+		Student student1 = new Student();
+		student1.setId(3);
+		student1.setAge(10);
+
+		List<Student> students = new ArrayList<Student>();
+		students.add(student);
+		students.add(student1);
+
+		studentJDBCTemplate.batchUpdate(students);
+
+		List<Student> updatedStudents = studentJDBCTemplate.findAll();
+		System.out.println("Updated Students");
+
+		for (Student student3 : updatedStudents) {
+			System.out.print("ID : " + student3.getId());
+			System.out.println(", Age : " + student3.getAge());
+		}
 
 		// logger.info("All users -> {}", studentJDBCTemplate.listStudents());
 	}

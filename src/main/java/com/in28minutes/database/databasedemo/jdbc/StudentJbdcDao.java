@@ -1,11 +1,14 @@
 package com.in28minutes.database.databasedemo.jdbc;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -19,7 +22,7 @@ import com.in28minutes.database.databasedemo.entity.Student;
 public class StudentJbdcDao {
 	@Autowired
 	JdbcTemplate jdbcTemplateObject;
-	
+
 	@Autowired
 	DataSource dataSource;
 
@@ -68,17 +71,34 @@ public class StudentJbdcDao {
 		student.setAge((Integer) out.get("out_age"));
 		return student;
 	}
-	
-	  public Student getStudentByStoredFunction(Integer id) {
-	      SimpleJdbcCall jdbcCall = new SimpleJdbcCall(dataSource).withFunctionName("get_student_name");
-	      SqlParameterSource in = new MapSqlParameterSource().addValue("in_id", id);
-	      String name = jdbcCall.executeFunction(String.class, in);
-	      
-	      Student student = new Student();
-	      student.setId(id);
-	      student.setName(name);
-	      return student;      
-	   }
-	
+
+	public Student getStudentByStoredFunction(Integer id) {
+		SimpleJdbcCall jdbcCall = new SimpleJdbcCall(dataSource).withFunctionName("get_student_name");
+		SqlParameterSource in = new MapSqlParameterSource().addValue("in_id", id);
+		String name = jdbcCall.executeFunction(String.class, in);
+
+		Student student = new Student();
+		student.setId(id);
+		student.setName(name);
+		return student;
+	}
+
+	public void batchUpdate(final List<Student> students) {
+		String SQL = "update Student set age = ? where id = ?";
+		int[] updateCounts = jdbcTemplateObject.batchUpdate(SQL, new BatchPreparedStatementSetter() {
+
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				ps.setInt(1, students.get(i).getAge());
+				ps.setInt(2, students.get(i).getId());
+			}
+
+			@Override
+			public int getBatchSize() {
+				return students.size();
+			}
+		});
+		System.out.println("Records updated!");
+	}
 
 }
