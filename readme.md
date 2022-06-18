@@ -20,4 +20,19 @@ BEGIN
 END $$
 
 DELIMITER ;
+USE `companyhr`;
+DROP function IF EXISTS `get_student_name`;
 
+DELIMITER $$
+USE `companyhr`$$
+CREATE FUNCTION companyhr.get_student_name(in_id INTEGER)
+RETURNS varchar(200) READS SQL DATA
+BEGIN
+DECLARE out_name VARCHAR(200);
+   SELECT name
+   INTO out_name
+   FROM Student where id = in_id;
+RETURN out_name; 
+End$$
+
+DELIMITER ;

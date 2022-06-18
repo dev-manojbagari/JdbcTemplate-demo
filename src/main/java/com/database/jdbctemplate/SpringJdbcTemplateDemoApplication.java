@@ -67,6 +67,16 @@ public class SpringJdbcTemplateDemoApplication implements CommandLineRunner {
 	      System.out.print("ID : " + student3.getId() );
 	      System.out.print(", Name : " + student3.getName() );
 	      System.out.println(", Age : " + student3.getAge()); 
+	    
+	      
+	      System.out.println("------Calling Stored Function--------" );
+	      Student student4 = studentJDBCTemplate.getStudentByStoredFunction(1);
+	      System.out.print("ID : " + student4.getId() );
+	      System.out.print(", Name : " + student4.getName() );
+	      
+	      
+	      
+	      
 	      
 		
 	//	logger.info("All users -> {}", studentJDBCTemplate.listStudents());

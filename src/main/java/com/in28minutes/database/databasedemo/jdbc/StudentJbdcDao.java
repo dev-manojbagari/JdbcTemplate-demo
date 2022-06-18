@@ -68,5 +68,17 @@ public class StudentJbdcDao {
 		student.setAge((Integer) out.get("out_age"));
 		return student;
 	}
+	
+	  public Student getStudentByStoredFunction(Integer id) {
+	      SimpleJdbcCall jdbcCall = new SimpleJdbcCall(dataSource).withFunctionName("get_student_name");
+	      SqlParameterSource in = new MapSqlParameterSource().addValue("in_id", id);
+	      String name = jdbcCall.executeFunction(String.class, in);
+	      
+	      Student student = new Student();
+	      student.setId(id);
+	      student.setName(name);
+	      return student;      
+	   }
+	
 
 }
