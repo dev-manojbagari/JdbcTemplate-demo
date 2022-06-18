@@ -3,8 +3,6 @@ package com.database.jdbctemplate;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +15,6 @@ import com.in28minutes.database.databasedemo.jdbc.StudentJbdcDao;
 @ComponentScan("com.in28minutes.database.*")
 @SpringBootApplication
 public class SpringJdbcTemplateDemoApplication implements CommandLineRunner {
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	StudentJbdcDao studentJDBCTemplate;
@@ -46,8 +43,8 @@ public class SpringJdbcTemplateDemoApplication implements CommandLineRunner {
 	      System.out.println("----Updating Record with ID = 2 -----" );
 	      studentJDBCTemplate.update(2, 20);
 	      
-	      System.out.println("----Listing Record with ID = 2 -----" );
-	      Student student = studentJDBCTemplate.findById(2);
+	      System.out.println("----Listing Record with ID = 20 -----" );
+	      Student student = studentJDBCTemplate.findById(20);
 	      System.out.print("ID : " + student.getId() );
 	      System.out.print(", Name : " + student.getName() );
 	      System.out.println(", Age : " + student.getAge());  
@@ -64,8 +61,12 @@ public class SpringJdbcTemplateDemoApplication implements CommandLineRunner {
 	         System.out.print(", Name : " + record.getName() );
 	         System.out.println(", Age : " + record.getAge());
 	      }     
-	      
-	      
+	      System.out.println("------Calling Stored Procedure--------" );
+
+	      Student student3 = studentJDBCTemplate.getStudentByStoredProcedure(1);
+	      System.out.print("ID : " + student3.getId() );
+	      System.out.print(", Name : " + student3.getName() );
+	      System.out.println(", Age : " + student3.getAge()); 
 	      
 		
 	//	logger.info("All users -> {}", studentJDBCTemplate.listStudents());
