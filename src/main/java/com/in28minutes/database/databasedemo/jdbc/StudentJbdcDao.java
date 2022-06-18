@@ -39,5 +39,13 @@ public class StudentJbdcDao {
 				new Object[] { id });
 		return student;
 	}
+	
+	   public void delete(Integer id){
+		      String SQL = "delete from Student where id = ?";
+		      jdbcTemplateObject.update(SQL, id);
+		      System.out.println("Deleted Record with ID = " + id );
+		      return;
+		   }
+	
 
 }

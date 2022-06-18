@@ -53,6 +53,20 @@ public class SpringJdbcTemplateDemoApplication implements CommandLineRunner {
 	      System.out.println(", Age : " + student.getAge());  
 	      
 	      
+	      System.out.println("----Delete Record with ID = 2 -----" );
+	      studentJDBCTemplate.delete(2);
+
+	      System.out.println("------Listing Multiple Records--------" );
+	      List<Student> students2 = studentJDBCTemplate.findAll();
+	      
+	      for (Student record : students2) {
+	         System.out.print("ID : " + record.getId() );
+	         System.out.print(", Name : " + record.getName() );
+	         System.out.println(", Age : " + record.getAge());
+	      }     
+	      
+	      
+	      
 		
 	//	logger.info("All users -> {}", studentJDBCTemplate.listStudents());
 	}
