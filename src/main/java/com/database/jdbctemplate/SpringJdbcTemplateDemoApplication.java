@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 import com.in28minutes.database.databasedemo.jdbc.EmployeeJbdcDao;
+import com.in28minutes.database.databasedemo.jdbc.PersonJbdcDao;
 import com.in28minutes.database.databasedemo.jdbc.StudentJbdcDao;
 
 @ComponentScan("com.in28minutes.database.*")
@@ -18,6 +19,9 @@ public class SpringJdbcTemplateDemoApplication implements CommandLineRunner {
 
 	@Autowired
 	EmployeeJbdcDao employeeJDBCTemplate;
+
+	@Autowired
+	PersonJbdcDao personJDBCTemplate;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringJdbcTemplateDemoApplication.class, args);
@@ -75,8 +79,10 @@ public class SpringJdbcTemplateDemoApplication implements CommandLineRunner {
 //	      System.out.print(", Name : " + student4.getName() );
 //	      
 
-		byte[] imageData = { 0, 1, 0, 8, 20, 40, 95 };
-		employeeJDBCTemplate.updateImage(1, imageData);
+//		byte[] imageData = { 0, 1, 0, 8, 20, 40, 95 };
+//		employeeJDBCTemplate.updateImage(1, imageData);
+
+		personJDBCTemplate.updateDescription(1, "This can be a very long text upto 4 GB of size.");
 
 		// logger.info("All users -> {}", studentJDBCTemplate.listStudents());
 	}
