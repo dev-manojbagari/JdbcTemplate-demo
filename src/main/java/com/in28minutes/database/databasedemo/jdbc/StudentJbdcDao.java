@@ -12,7 +12,9 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
@@ -98,6 +100,15 @@ public class StudentJbdcDao {
 				return students.size();
 			}
 		});
+		System.out.println("Records updated!");
+	}
+
+	public void batchUpdateUsingObjects(final List<Student> students) {
+		String SQL = "update Student set age = :age where id = :id";
+		SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(students.toArray());
+		NamedParameterJdbcTemplate jdbcTemplateObject = new NamedParameterJdbcTemplate(dataSource);
+
+		int[] updateCounts = jdbcTemplateObject.batchUpdate(SQL, batch);
 		System.out.println("Records updated!");
 	}
 

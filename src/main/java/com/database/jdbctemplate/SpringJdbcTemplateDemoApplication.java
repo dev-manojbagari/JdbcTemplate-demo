@@ -88,7 +88,36 @@ public class SpringJdbcTemplateDemoApplication implements CommandLineRunner {
 
 // personJDBCTemplate.updateDescription(1, "This can be a very long text upto 4 GB of size.");
 
-		System.out.println("------Batch update--------");
+//		System.out.println("------Batch update--------");
+//		List<Student> initialStudents = studentJDBCTemplate.findAll();
+//		System.out.println("Initial Students");
+//
+//		for (Student student2 : initialStudents) {
+//			System.out.print("ID : " + student2.getId());
+//			System.out.println(", Age : " + student2.getAge());
+//		}
+//		Student student = new Student();
+//		student.setId(1);
+//		student.setAge(10);
+//
+//		Student student1 = new Student();
+//		student1.setId(3);
+//		student1.setAge(10);
+//
+//		List<Student> students = new ArrayList<Student>();
+//		students.add(student);
+//		students.add(student1);
+//
+//		studentJDBCTemplate.batchUpdate(students);
+//
+//		List<Student> updatedStudents = studentJDBCTemplate.findAll();
+//		System.out.println("Updated Students");
+//
+//		for (Student student3 : updatedStudents) {
+//			System.out.print("ID : " + student3.getId());
+//			System.out.println(", Age : " + student3.getAge());
+//		}
+
 		List<Student> initialStudents = studentJDBCTemplate.findAll();
 		System.out.println("Initial Students");
 
@@ -98,17 +127,17 @@ public class SpringJdbcTemplateDemoApplication implements CommandLineRunner {
 		}
 		Student student = new Student();
 		student.setId(1);
-		student.setAge(10);
+		student.setAge(15);
 
 		Student student1 = new Student();
 		student1.setId(3);
-		student1.setAge(10);
+		student1.setAge(16);
 
 		List<Student> students = new ArrayList<Student>();
 		students.add(student);
 		students.add(student1);
 
-		studentJDBCTemplate.batchUpdate(students);
+		studentJDBCTemplate.batchUpdateUsingObjects(students);
 
 		List<Student> updatedStudents = studentJDBCTemplate.findAll();
 		System.out.println("Updated Students");
