@@ -1,6 +1,5 @@
 package com.database.jdbctemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,34 +147,46 @@ public class SpringJdbcTemplateDemoApplication implements CommandLineRunner {
 //			System.out.println(", Age : " + student3.getAge());
 //		}
 
-		System.out.println("------Multiple Batch update--------");
+//		System.out.println("------Multiple Batch update--------");
+//
+//		List<Student> initialStudents3 = studentJDBCTemplate.findAll();
+//		System.out.println("Initial Students");
+//
+//		for (Student student2 : initialStudents3) {
+//			System.out.print("ID : " + student2.getId());
+//			System.out.println(", Age : " + student2.getAge());
+//		}
+//		Student student = new Student();
+//		student.setId(1);
+//		student.setAge(17);
+//
+//		Student student1 = new Student();
+//		student1.setId(3);
+//		student1.setAge(18);
+//
+//		List<Student> students = new ArrayList<Student>();
+//		students.add(student);
+//		students.add(student1);
+//		studentJDBCTemplate.batchUpdate(students);
+//
+//		List<Student> updatedStudents = studentJDBCTemplate.findAll();
+//		System.out.println("Updated Students");
+//
+//		for (Student student3 : updatedStudents) {
+//			System.out.print("ID : " + student3.getId());
+//			System.out.println(", Age : " + student3.getAge());
+//		}
 
-		List<Student> initialStudents3 = studentJDBCTemplate.findAll();
-		System.out.println("Initial Students");
+		System.out.println("------Insert with Simple Jdbc Insert--------");
+		studentJDBCTemplate.createWithSimpeJdbcInsert("Nuhaxxx", 2);
 
-		for (Student student2 : initialStudents3) {
-			System.out.print("ID : " + student2.getId());
-			System.out.println(", Age : " + student2.getAge());
-		}
-		Student student = new Student();
-		student.setId(1);
-		student.setAge(17);
+		System.out.println("------Listing Multiple Records--------");
+		List<Student> students = studentJDBCTemplate.findAll();
 
-		Student student1 = new Student();
-		student1.setId(3);
-		student1.setAge(18);
-
-		List<Student> students = new ArrayList<Student>();
-		students.add(student);
-		students.add(student1);
-		studentJDBCTemplate.batchUpdate(students);
-
-		List<Student> updatedStudents = studentJDBCTemplate.findAll();
-		System.out.println("Updated Students");
-
-		for (Student student3 : updatedStudents) {
-			System.out.print("ID : " + student3.getId());
-			System.out.println(", Age : " + student3.getAge());
+		for (Student record : students) {
+			System.out.print("ID : " + record.getId());
+			System.out.print(", Name : " + record.getName());
+			System.out.println(", Age : " + record.getAge());
 		}
 
 		// logger.info("All users -> {}", studentJDBCTemplate.listStudents());

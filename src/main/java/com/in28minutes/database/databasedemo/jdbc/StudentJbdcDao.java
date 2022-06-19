@@ -2,6 +2,7 @@ package com.in28minutes.database.databasedemo.jdbc;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import com.in28minutes.database.databasedemo.entity.Student;
@@ -117,12 +119,24 @@ public class StudentJbdcDao {
 		String SQL = "update Student set age = ? where id = ?";
 		int[][] updateCounts = jdbcTemplateObject.batchUpdate(SQL, students, 1,
 				new ParameterizedPreparedStatementSetter<Student>() {
+					@Override
 					public void setValues(PreparedStatement ps, Student student) throws SQLException {
 						ps.setInt(1, student.getAge());
 						ps.setInt(2, student.getId());
 					}
 				});
 		System.out.println("Records updated!");
+	}
+
+	public void createWithSimpeJdbcInsert(String name, Integer age) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("name", name);
+		parameters.put("age", age);
+
+		SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("Student");
+		jdbcInsert.execute(parameters);
+		System.out.println("Created Record Name = " + name + " Age = " + age);
+		return;
 	}
 
 }
