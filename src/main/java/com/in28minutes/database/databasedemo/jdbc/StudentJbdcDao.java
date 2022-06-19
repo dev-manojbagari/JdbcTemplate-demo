@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -24,6 +25,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.object.SqlQuery;
 import org.springframework.jdbc.object.SqlUpdate;
+import org.springframework.jdbc.object.StoredProcedure;
 import org.springframework.stereotype.Repository;
 
 import com.in28minutes.database.databasedemo.entity.Student;
@@ -170,6 +172,26 @@ public class StudentJbdcDao {
 		sqlUpdate.update(age.intValue(), id.intValue());
 		System.out.println("Updated Record with ID = " + id);
 		return;
+	}
+
+	// calling stored procedure using StoredProcedure Class
+	class StudentProcedure extends StoredProcedure {
+		public StudentProcedure(DataSource dataSource, String procedureName) {
+			super(dataSource, procedureName);
+			declareParameter(new SqlParameter("in_id", Types.INTEGER));
+			declareParameter(new SqlOutParameter("out_name", Types.VARCHAR));
+			declareParameter(new SqlOutParameter("out_age", Types.INTEGER));
+			compile();
+		}
+
+		public Student execute(Integer id) {
+			Map<String, Object> out = super.execute(id);
+			Student student = new Student();
+			student.setId(id);
+			student.setName((String) out.get("out_name"));
+			student.setAge((Integer) out.get("out_age"));
+			return student;
+		}
 	}
 
 }
