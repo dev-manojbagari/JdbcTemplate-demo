@@ -2,6 +2,7 @@ package com.in28minutes.database.databasedemo.jdbc;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -21,6 +23,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.object.SqlQuery;
+import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.stereotype.Repository;
 
 import com.in28minutes.database.databasedemo.entity.Student;
@@ -154,6 +157,19 @@ public class StudentJbdcDao {
 		sqlQuery.setSql(sql);
 		List<Student> students = sqlQuery.execute();
 		return students;
+	}
+
+	// // resuable sql update object
+	public void updateUsingSqlUpdate(Integer id, Integer age) {
+		String SQL = "update Student set age = ? where id = ?";
+
+		SqlUpdate sqlUpdate = new SqlUpdate(dataSource, SQL);
+		sqlUpdate.declareParameter(new SqlParameter("age", Types.INTEGER));
+		sqlUpdate.declareParameter(new SqlParameter("id", Types.INTEGER));
+		sqlUpdate.compile();
+		sqlUpdate.update(age.intValue(), id.intValue());
+		System.out.println("Updated Record with ID = " + id);
+		return;
 	}
 
 }
