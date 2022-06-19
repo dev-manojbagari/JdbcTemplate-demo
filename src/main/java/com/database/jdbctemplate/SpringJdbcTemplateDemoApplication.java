@@ -118,26 +118,57 @@ public class SpringJdbcTemplateDemoApplication implements CommandLineRunner {
 //			System.out.println(", Age : " + student3.getAge());
 //		}
 
-		List<Student> initialStudents = studentJDBCTemplate.findAll();
+//		System.out.println("------Batch update using object--------");
+//		List<Student> initialStudents2 = studentJDBCTemplate.findAll();
+//		System.out.println("Initial Students");
+//
+//		for (Student student2 : initialStudents2) {
+//			System.out.print("ID : " + student2.getId());
+//			System.out.println(", Age : " + student2.getAge());
+//		}
+//		Student student = new Student();
+//		student.setId(1);
+//		student.setAge(15);
+//
+//		Student student1 = new Student();
+//		student1.setId(3);
+//		student1.setAge(16);
+//
+//		List<Student> students = new ArrayList<Student>();
+//		students.add(student);
+//		students.add(student1);
+//
+//		studentJDBCTemplate.batchUpdateUsingObjects(students);
+//
+//		List<Student> updatedStudents = studentJDBCTemplate.findAll();
+//		System.out.println("Updated Students");
+//
+//		for (Student student3 : updatedStudents) {
+//			System.out.print("ID : " + student3.getId());
+//			System.out.println(", Age : " + student3.getAge());
+//		}
+
+		System.out.println("------Multiple Batch update--------");
+
+		List<Student> initialStudents3 = studentJDBCTemplate.findAll();
 		System.out.println("Initial Students");
 
-		for (Student student2 : initialStudents) {
+		for (Student student2 : initialStudents3) {
 			System.out.print("ID : " + student2.getId());
 			System.out.println(", Age : " + student2.getAge());
 		}
 		Student student = new Student();
 		student.setId(1);
-		student.setAge(15);
+		student.setAge(17);
 
 		Student student1 = new Student();
 		student1.setId(3);
-		student1.setAge(16);
+		student1.setAge(18);
 
 		List<Student> students = new ArrayList<Student>();
 		students.add(student);
 		students.add(student1);
-
-		studentJDBCTemplate.batchUpdateUsingObjects(students);
+		studentJDBCTemplate.batchUpdate(students);
 
 		List<Student> updatedStudents = studentJDBCTemplate.findAll();
 		System.out.println("Updated Students");

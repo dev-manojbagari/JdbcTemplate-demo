@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -109,6 +110,18 @@ public class StudentJbdcDao {
 		NamedParameterJdbcTemplate jdbcTemplateObject = new NamedParameterJdbcTemplate(dataSource);
 
 		int[] updateCounts = jdbcTemplateObject.batchUpdate(SQL, batch);
+		System.out.println("Records updated!");
+	}
+
+	public void multipleBatchUpdate(final List<Student> students) {
+		String SQL = "update Student set age = ? where id = ?";
+		int[][] updateCounts = jdbcTemplateObject.batchUpdate(SQL, students, 1,
+				new ParameterizedPreparedStatementSetter<Student>() {
+					public void setValues(PreparedStatement ps, Student student) throws SQLException {
+						ps.setInt(1, student.getAge());
+						ps.setInt(2, student.getId());
+					}
+				});
 		System.out.println("Records updated!");
 	}
 
