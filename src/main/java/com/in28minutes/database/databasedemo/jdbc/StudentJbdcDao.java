@@ -13,12 +13,14 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.object.SqlQuery;
 import org.springframework.stereotype.Repository;
 
 import com.in28minutes.database.databasedemo.entity.Student;
@@ -137,6 +139,21 @@ public class StudentJbdcDao {
 		jdbcInsert.execute(parameters);
 		System.out.println("Created Record Name = " + name + " Age = " + age);
 		return;
+	}
+
+	// resuable sql query object
+	public List<Student> findAllWithSqlQeryObject() {
+		String sql = "select * from Student";
+		SqlQuery<Student> sqlQuery = new SqlQuery<Student>() {
+			@Override
+			protected RowMapper<Student> newRowMapper(Object[] parameters, Map<?, ?> context) {
+				return new StudentMapper();
+			}
+		};
+		sqlQuery.setDataSource(dataSource);
+		sqlQuery.setSql(sql);
+		List<Student> students = sqlQuery.execute();
+		return students;
 	}
 
 }
